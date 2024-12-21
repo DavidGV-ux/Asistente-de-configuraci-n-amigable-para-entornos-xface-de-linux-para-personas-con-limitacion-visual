@@ -1,0 +1,3 @@
+sudo apt-get install mpv x11-utils
+sudo apt-get install xdotool espeak
+

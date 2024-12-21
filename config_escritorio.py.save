@@ -1,0 +1,35 @@
+import os
+import speech_recognition as sr
+from gtts import gTTS
+from playsound import playsound
+
+# Función para hablar una opción
+def hablar(texto):
+    tts = gTTS(text=texto, lang='es')
+    tts.save("respuesta.mp3")
+    playsound("respuesta.mp3")
+    os.remove("respuesta.mp3")
+
+# Función para reconocer voz
+def escuchar():
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Escuchando...")
+        r.adjust_for_ambient_noise(source)
+        audio = r.listen(source)
+    try:
+        comando = r.recognize_google(audio, language='es-ES')
+        print(f"Escuchaste: {comando}")
+        return comando.lower()
+    except sr.UnknownValueError:
+        hablar("Lo siento, no entendí lo que dijiste.")
+        return None
+    except sr.RequestError:
+        hablar("No pude conectar con el servicio de reconocimiento de voz.")
+        return None
+
+# Función para ejecutar el script según la opción
+def ejecutar_configuracion(opcion):
+    if opcion == "1":
+        os.system("bash configurar_discapacidad_leve.sh")
+        hablar("Configuración
